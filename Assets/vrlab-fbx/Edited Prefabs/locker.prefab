@@ -1455,11 +1455,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4341513458543138}
-  - component: {fileID: 54685636074701276}
-  - component: {fileID: 64654569062798492}
+  - component: {fileID: 54827728366214814}
+  - component: {fileID: 65299452014714450}
   m_Layer: 0
   m_Name: locker
-  m_TagString: Untagged
+  m_TagString: lockerTag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3411,8 +3411,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1600648420759292}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.15094, y: 0, z: -2.3130417}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.13877654, y: 0.721, z: 0.904}
   m_LocalScale: {x: 1, y: 1.1, z: 1}
   m_Children:
   - {fileID: 4400886415708378}
@@ -7822,7 +7822,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1976257790430764}
   m_Mesh: {fileID: 4300130, guid: e7804e86f647d1a4f881923335910e61, type: 3}
---- !u!54 &54685636074701276
+--- !u!54 &54827728366214814
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -7837,8 +7837,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &64654569062798492
-MeshCollider:
+--- !u!65 &65299452014714450
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -7846,8 +7846,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.30405736, y: 0.29334268, z: 1.7745169}
+  m_Center: {x: 0.014031053, y: 0.0038264692, z: 0.00000017881393}

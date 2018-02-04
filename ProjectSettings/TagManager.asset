@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - deskTag
+  - tvTag
+  - chairTag
+  - lockerTag
+  - storageTag
+  - Floor
+  - randomSphere
   layers:
   - Default
   - TransparentFX
