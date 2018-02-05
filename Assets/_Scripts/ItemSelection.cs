@@ -10,9 +10,9 @@ public class ItemSelection : MonoBehaviour {
 	public GameObject lineRendererGobject;
 	private LineRenderer lineRenderComponent;
 	public GameObject rightControllerRef;
-
+	public float rotateSpeed = 100.0f;
+	public float translateSpeed = 1.0f;
 	public List<GameObject> selectedObjects = new List<GameObject>();
-	public List<Material> originalMaterial = new List<Material>();
 	private bool isSelecting = false;
 
 	void Start(){
@@ -49,6 +49,8 @@ public class ItemSelection : MonoBehaviour {
 							item.SetMaterial (selectedMaterial);
 							selectedObjects.Add (hit.transform.gameObject);
 						} else { // this object was previously selected
+							if (!item.canBePlaced)
+								item.ResetOriginalState ();
 							var i = selectedObjects.IndexOf(hit.transform.gameObject);
 							selectedObjects.RemoveAt (i);
 							item.ResetMaterials ();
@@ -63,6 +65,39 @@ public class ItemSelection : MonoBehaviour {
 			}
 		} else {
 			lineRendererGobject.SetActive (false);
+		}
+
+		if (selectedObjects.Count > 0) {
+			var leftThumbstick = OVRInput.Get (OVRInput.Axis2D.PrimaryThumbstick);
+			var rightThumbstick = OVRInput.Get (OVRInput.Axis2D.SecondaryThumbstick);
+			Vector3 midLoc = Vector3.zero;
+			foreach (var selected in selectedObjects) {
+				var selectedState = selected.GetComponent<ItemSelectState> ();
+				if (!selectedState.canBePlaced)
+					selectedState.SetMaterial (invalidMaterial);
+				else
+					selectedState.SetMaterial (selectedMaterial);
+				if (midLoc == Vector3.zero) {
+					midLoc = selected.transform.position;
+					continue;
+				}
+				midLoc += selected.transform.position;
+			}
+
+			midLoc /= selectedObjects.Count;
+
+			//parentSelectRef.transform.position = midLoc;
+
+			foreach(var selected in selectedObjects){
+				
+				selected.transform.RotateAround (midLoc, Vector3.up, rotateSpeed * leftThumbstick.x * Time.deltaTime);
+				selected.transform.Translate (new Vector3 (
+					rightControllerRef.transform.forward.x * rightThumbstick.x, 
+					rightControllerRef.transform.forward.y * rightThumbstick.y, 
+					0) * Time.deltaTime * translateSpeed);
+			}
+
+			//
 		}
 	}
 
