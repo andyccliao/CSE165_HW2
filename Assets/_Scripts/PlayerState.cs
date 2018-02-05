@@ -5,19 +5,15 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(ItemSpawner))]
 [RequireComponent(typeof(Teleport))]
+[RequireComponent(typeof(ItemSelection))]
 public class PlayerState : MonoBehaviour {
 
-//	public bool isSelecting = false;
 	public Teleport teleportRef;
-//	public bool spawnMode = false;
-//	public bool rayCast = true;
-//	public bool gogoHands = false;
-//	public GameObject lineRendererGobject;
-//	private LineRenderer lineRenderComponent;
-
 	private ItemSpawner itemSpawner;
+	private ItemSelection itemSelection;
 
-	public Text textComponent;
+	public Text stateTextComponent;
+	public Text instructionTextComponent;
 
 	private EPlayerStates playerState;
 
@@ -32,8 +28,8 @@ public class PlayerState : MonoBehaviour {
 
 	void Start(){
 		playerState = EPlayerStates.Teleport;
-//		lineRenderComponent = lineRendererGobject.GetComponent<LineRenderer> ();
 		itemSpawner = GetComponent<ItemSpawner>();
+		itemSelection = GetComponent<ItemSelection> ();
 		itemSpawner.enabled = false;
 	}
 	// Update is called once per frame
@@ -48,41 +44,54 @@ public class PlayerState : MonoBehaviour {
 		case EPlayerStates.Teleport:
 			teleportRef.enabled = true;
 			itemSpawner.enabled = false;
-			SetText ("Teleport Mode");
+			itemSelection.enabled = false;
+			SetStateText ("Teleport Mode");
+			SetInstructionText ("Press hold Right Palm\nAim\nPull right trigger to teleport");
 			break;
 		case EPlayerStates.Spawn:
 			teleportRef.enabled = false;
 			itemSpawner.enabled = true;
-			SetText ("Spawn Mode");
+			itemSelection.enabled = false;
+			SetStateText ("Spawn Mode");
 			break;
 		case EPlayerStates.Select1:
 			teleportRef.enabled = false;
 			itemSpawner.enabled = false;
-			SetText ("Select1 Mode");
+			itemSelection.enabled = true;
+			SetStateText ("Select1 Mode");
 			break;
 		case EPlayerStates.Select2:
 			teleportRef.enabled = false;
 			itemSpawner.enabled = false;
-			SetText ("Select2 Mode");
+			itemSelection.enabled = false;
+			SetStateText ("Select2 Mode");
 			break;
 		case EPlayerStates.MeasuringTool:
 			teleportRef.enabled = false;
 			itemSpawner.enabled = false;
-			SetText ("Measuring Mode");
+			itemSelection.enabled = false;
+			SetStateText ("Measuring Mode");
 			break;
 		default:
 			teleportRef.enabled = true;
 			itemSpawner.enabled = false;
-			SetText ("Teleport Mode");
+			itemSelection.enabled = false;
+			SetStateText ("Teleport Mode");
 			break;
 		}
 			
 	}
 
 
-	void SetText(string text){
-		if (textComponent != null) {
-			textComponent.text = text;
+	void SetStateText(string text){
+		if (stateTextComponent != null) {
+			stateTextComponent.text = text;
+		}
+	}
+
+	void SetInstructionText(string text){
+		if (instructionTextComponent != null) {
+			instructionTextComponent.text = text;
 		}
 	}
 }

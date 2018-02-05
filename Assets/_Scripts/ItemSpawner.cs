@@ -12,6 +12,7 @@ public class ItemSpawner : MonoBehaviour {
 	public GameObject rightControllerRef;
 
 
+
 	void Awake(){
 		if (itemsToSpawn.Length > 0) {
 			for (var i = 0; i < itemsToSpawn.Length; i++) {

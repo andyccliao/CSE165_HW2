@@ -5,8 +5,6 @@ using UnityEngine;
 public class Teleport : MonoBehaviour {
 
 	public GameObject lineRendererGobject;
-	public float lineLength;
-	public float lineWidth;
 	private LineRenderer lineRenderComponent;
 	public GameObject player;
 	private bool isTeleporting = false;
@@ -56,7 +54,12 @@ public class Teleport : MonoBehaviour {
 
 		} else {
 			lineRendererGobject.SetActive (false);
-			Debug.Log ("No Line");
+			//Debug.Log ("No Line");
 		}
+	}
+
+	void OnDisable() {
+		if(lineRendererGobject != null)
+			lineRendererGobject.SetActive (false);
 	}
 }
