@@ -81,12 +81,10 @@ public class PlayerState : MonoBehaviour {
 				//detect whether or not the user wants to view next or previous item
 				if (OVRInput.GetDown (OVRInput.Button.One)) {
 					index = (index - 1 + itemsToSpawn.Length) % itemsToSpawn.Length;
-					itemSpawnPreview.GetComponent<ItemPreviewState> ().Reset ();
 					itemSpawnPreview.SetActive (false);
 					itemSpawnPreview = itemsToSpawn [index];
 				} else if (OVRInput.GetDown (OVRInput.Button.Two)) {
 					index = (index + 1) % itemsToSpawn.Length;
-					itemSpawnPreview.GetComponent<ItemPreviewState> ().Reset ();
 					itemSpawnPreview.SetActive (false);
 					itemSpawnPreview = itemsToSpawn [index];
 				}
@@ -109,9 +107,7 @@ public class PlayerState : MonoBehaviour {
 						var itemPreviewState = itemSpawnPreview.GetComponent<ItemPreviewState> ();
 						if (itemPreviewState != null) {
 							if (itemPreviewState.CanBePlaced) {
-								Debug.Log ("CAN BE PLACED!");
 								if (OVRInput.GetDown (OVRInput.Button.SecondaryThumbstick)) {
-									Debug.Log ("ITEM SPAWNED");
 									itemManager.SpawnObject (itemSpawnPreview, itemPreviewState.transform.position);
 								} 
 							}

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class ItemPreviewState : MonoBehaviour {
 
@@ -12,18 +11,19 @@ public class ItemPreviewState : MonoBehaviour {
 
 	void Start(){
 		collided = new LinkedList<GameObject> ();
-		//SetSelectedMaterial ();
+		SetSelectedMaterial ();
 	}
 
 	public void Reset(){
 		CanBePlaced = true;
 		collided = new LinkedList<GameObject> ();
+		SetSelectedMaterial ();
 	}
 
 	void OnTriggerEnter(Collider col){
 		Debug.Log ("Colliding with " + col.gameObject.tag);
 		collided.AddLast (col.gameObject);
-		//SetInvalidMaterial ();
+		SetInvalidMaterial ();
 		CanBePlaced = false;
 	}
 
@@ -31,30 +31,35 @@ public class ItemPreviewState : MonoBehaviour {
 		collided.Remove (col.gameObject);
 
 		if (collided.Count == 0) {
-			//SetSelectedMaterial ();
+			SetSelectedMaterial ();
 			CanBePlaced = true;
 		}
-		
+	}
 
+	void OnDisable(){
+		Reset ();
 	}
 
 	void SetSelectedMaterial(){
 		var renderers = GetComponentsInChildren<Renderer> ();
-		var newMaterials = new LinkedList<Material> ();
+
 		foreach (Renderer renderer in renderers) {
-			foreach (Material mat in renderer.materials)
-				newMaterials.AddLast (selectedMaterial);
-			renderer.materials = newMaterials.ToArray ();
+			var copy = renderer.materials;
+			for (var i = 0; i < copy.Length; i++) {
+				copy [i] = selectedMaterial;
+			}
+			renderer.materials = copy;
 		}
 	}
 
 	void SetInvalidMaterial(){
 		var renderers = GetComponentsInChildren<Renderer> ();
-		var newMaterials = new LinkedList<Material> ();
 		foreach (Renderer renderer in renderers) {
-			foreach (Material mat in renderer.materials)
-				newMaterials.AddLast (invalidMaterial);
-			renderer.materials = newMaterials.ToArray ();
+			var copy = renderer.materials;
+			for (var i = 0; i < copy.Length; i++) {
+				copy [i] = invalidMaterial;
+			}
+			renderer.materials = copy;
 		}
 	}
 }
