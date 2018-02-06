@@ -6,21 +6,30 @@ public class ItemSelectState : MonoBehaviour {
 
 
 	public Material[][] materialsCopy;
-	public LinkedList<GameObject> collided;
+	private Material[][] validMaterialCopy;
+	private Material[][] invalidMaterialCopy;
+	public Material validMaterial;
+	public Material invalidMaterial;
+	public List<GameObject> collided;
 	public Vector3 originalPos;
 	public Quaternion originalRot;
 	public bool canBePlaced = true;
 	// Use this for initialization
 	void Awake () {
+		validMaterial = Resources.Load ("Materials/SelectedMaterial") as Material;
+		invalidMaterial = Resources.Load ("Materials/BadMaterial") as Material;
+		Debug.Log (validMaterial);
+		Debug.Log (invalidMaterial);
 		originalPos = transform.position;
 		originalRot = transform.rotation;
-		collided = new LinkedList<GameObject> ();
+		collided = new List<GameObject> ();
 		SaveMaterials ();
 	}
 
 	void OnTriggerEnter(Collider col){
 		canBePlaced = false;
-		collided.AddLast (col.gameObject);
+		if(!collided.Contains(col.gameObject))
+			collided.Add (col.gameObject);
 	}
 
 	void OnTriggerExit(Collider col){
@@ -39,10 +48,32 @@ public class ItemSelectState : MonoBehaviour {
 			var materialCopy = original[i].materials;
 			materialsCopy [i] = materialCopy;
 		}
-//		foreach (Renderer renderer in renderers) {
-//			var copy = renderer.materials;
-//			rendererCopy.Add(copy);
-//		}
+		initValidMaterials ();
+		initInvalidMaterials ();
+	}
+
+	private void initInvalidMaterials(){
+		Debug.Log ("Initializing Invalid Materials");
+		invalidMaterialCopy = new Material[materialsCopy.Length][];
+		for (var i = 0; i < materialsCopy.Length; i++) {
+			var copy = new Material [materialsCopy [i].Length];
+			for (var j = 0; j < copy.Length; j++) {
+				copy [j] = invalidMaterial;
+			}
+			invalidMaterialCopy [i] = copy;
+		}
+	}
+
+	private void initValidMaterials(){
+		Debug.Log ("Initializing valid Materials");
+		validMaterialCopy = new Material[materialsCopy.Length][];
+		for (var i = 0; i < materialsCopy.Length; i++) {
+			var copy = new Material [materialsCopy [i].Length];
+			for (var j = 0; j < copy.Length; j++) {
+				copy [j] = validMaterial;
+			}
+			validMaterialCopy [i] = copy;
+		}
 	}
 	public void ResetMaterials(){
 		Debug.Log ("RESETTING MATERIALS");
@@ -54,15 +85,23 @@ public class ItemSelectState : MonoBehaviour {
 		Debug.Log ("RETTING FINISHED");
 	}
 
-	public void SetMaterial(Material mat){
+	public void SetInvalidMaterial(){
 		var renderers = GetComponentsInChildren<Renderer> ();
 
-		foreach (Renderer renderer in renderers) {
-			var copy = renderer.materials;
-			for (var i = 0; i < copy.Length; i++) {
-				copy [i] = mat;
-			}
-			renderer.materials = copy;
+		for (var i = 0; i < renderers.Length; i++) {
+			
+			renderers[i].materials = invalidMaterialCopy[i];
+
+		}
+	}
+
+	public void SetValidMaterial(){
+		var renderers = GetComponentsInChildren<Renderer> ();
+
+		for (var i = 0; i < renderers.Length; i++) {
+
+			renderers[i].materials = validMaterialCopy[i];
+
 		}
 	}
 

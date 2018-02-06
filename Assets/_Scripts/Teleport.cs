@@ -16,14 +16,14 @@ public class Teleport : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		var fRightHandInput = OVRInput.Get (OVRInput.Axis1D.SecondaryHandTrigger);
+		var fRightHandInput = OVRInput.Get (OVRInput.RawAxis1D.RHandTrigger);
 		var rightHandTrigger = 0.0f;
 		RaycastHit hit;
 		if (lineRenderComponent != null && 
 			fRightHandInput > 0.8 && 
 			Physics.Raycast (transform.position, transform.forward, out hit)
 		) {
-			rightHandTrigger = OVRInput.Get (OVRInput.Axis1D.SecondaryIndexTrigger);
+			rightHandTrigger = OVRInput.Get (OVRInput.RawAxis1D.RIndexTrigger);
 			Debug.Log (hit.point);
 
 			var startPoint = transform.position;

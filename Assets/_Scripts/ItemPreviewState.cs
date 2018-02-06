@@ -7,10 +7,16 @@ public class ItemPreviewState : MonoBehaviour {
 	public bool CanBePlaced = true;
 	public Material selectedMaterial;
 	public Material invalidMaterial;
+	private Material[][] selectedMaterialCopy;
+	private Material[][] invalidMaterialCopy;
 	public LinkedList<GameObject> collided;
 
 	void Start(){
 		collided = new LinkedList<GameObject> ();
+		var renderers = GetComponentsInChildren<Renderer> ();
+		initInvalidMaterials (renderers);
+		initValidMaterials (renderers);
+
 		SetSelectedMaterial ();
 	}
 
@@ -43,23 +49,39 @@ public class ItemPreviewState : MonoBehaviour {
 	void SetSelectedMaterial(){
 		var renderers = GetComponentsInChildren<Renderer> ();
 
-		foreach (Renderer renderer in renderers) {
-			var copy = renderer.materials;
-			for (var i = 0; i < copy.Length; i++) {
-				copy [i] = selectedMaterial;
-			}
-			renderer.materials = copy;
+		for (int i=0; i < renderers.Length; i++) {
+			renderers[i].materials = selectedMaterialCopy[i];
 		}
 	}
 
 	void SetInvalidMaterial(){
 		var renderers = GetComponentsInChildren<Renderer> ();
-		foreach (Renderer renderer in renderers) {
-			var copy = renderer.materials;
-			for (var i = 0; i < copy.Length; i++) {
-				copy [i] = invalidMaterial;
+
+		for (int i=0; i < renderers.Length; i++) {
+			renderers[i].materials = invalidMaterialCopy[i];
+		}
+	}
+
+	private void initInvalidMaterials(Renderer[] renderers){
+		Debug.Log ("Initializing Invalid Materials");
+		invalidMaterialCopy = new Material[renderers.Length][];
+		for (var i = 0; i < renderers.Length; i++) {
+			var copy = new Material [renderers [i].materials.Length];
+			for (var j = 0; j < copy.Length; j++) {
+				copy [j] = invalidMaterial;
 			}
-			renderer.materials = copy;
+			invalidMaterialCopy [i] = copy;
+		}
+	}
+	private void initValidMaterials(Renderer[] renderers){
+		Debug.Log ("Initializing valid Materials");
+		selectedMaterialCopy = new Material[renderers.Length][];
+		for (var i = 0; i < renderers.Length; i++) {
+			var copy = new Material [renderers [i].materials.Length];
+			for (var j = 0; j < copy.Length; j++) {
+				copy [j] = selectedMaterial;
+			}
+			selectedMaterialCopy [i] = copy;
 		}
 	}
 }
