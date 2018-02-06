@@ -6,12 +6,14 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ItemSpawner))]
 [RequireComponent(typeof(Teleport))]
 [RequireComponent(typeof(ItemSelection))]
+[RequireComponent(typeof(ItemSelection2))]
 public class PlayerState : MonoBehaviour {
 
 	public Teleport teleportRef;
 	private ItemSpawner itemSpawner;
 	private ItemSelection itemSelection;
-
+	private ItemSelection2 itemSelection2;
+	public List<GameObject> selectedObjects = new List<GameObject>();
 	public Text stateTextComponent;
 	public Text instructionTextComponent;
 
@@ -30,6 +32,7 @@ public class PlayerState : MonoBehaviour {
 		playerState = EPlayerStates.Teleport;
 		itemSpawner = GetComponent<ItemSpawner>();
 		itemSelection = GetComponent<ItemSelection> ();
+		itemSelection2 = GetComponent<ItemSelection2> ();
 		itemSpawner.enabled = false;
 	}
 	// Update is called once per frame
@@ -38,6 +41,8 @@ public class PlayerState : MonoBehaviour {
 		// tap Y to toggle between selection mode and teleport mode
 		if (OVRInput.GetDown (OVRInput.RawButton.Y)) {
 			playerState = (EPlayerStates)(((int)(((int)playerState) + 1)) % ((int)EPlayerStates.SIZE));
+		} else if (OVRInput.GetDown (OVRInput.RawButton.X)) {
+			playerState = (EPlayerStates)(((int)(((int)playerState) - 1) + (int)EPlayerStates.SIZE) % ((int)EPlayerStates.SIZE));
 		}
 
 		switch (playerState) {
@@ -45,6 +50,7 @@ public class PlayerState : MonoBehaviour {
 			teleportRef.enabled = true;
 			itemSpawner.enabled = false;
 			itemSelection.enabled = false;
+			itemSelection2.enabled = false;
 			SetStateText ("Teleport Mode");
 			SetInstructionText ("Press hold Right Palm\nAim\nPull right trigger to teleport");
 			break;
@@ -52,30 +58,35 @@ public class PlayerState : MonoBehaviour {
 			teleportRef.enabled = false;
 			itemSpawner.enabled = true;
 			itemSelection.enabled = false;
+			itemSelection2.enabled = false;
 			SetStateText ("Spawn Mode");
 			break;
 		case EPlayerStates.Select1:
 			teleportRef.enabled = false;
 			itemSpawner.enabled = false;
 			itemSelection.enabled = true;
+			itemSelection2.enabled = false;
 			SetStateText ("Select1 Mode");
 			break;
 		case EPlayerStates.Select2:
 			teleportRef.enabled = false;
 			itemSpawner.enabled = false;
 			itemSelection.enabled = false;
+			itemSelection2.enabled = true;
 			SetStateText ("Select2 Mode");
 			break;
 		case EPlayerStates.MeasuringTool:
 			teleportRef.enabled = false;
 			itemSpawner.enabled = false;
 			itemSelection.enabled = false;
+			itemSelection2.enabled = true;
 			SetStateText ("Measuring Mode");
 			break;
 		default:
 			teleportRef.enabled = true;
 			itemSpawner.enabled = false;
 			itemSelection.enabled = false;
+			itemSelection2.enabled = false;
 			SetStateText ("Teleport Mode");
 			break;
 		}

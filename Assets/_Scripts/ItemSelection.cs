@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class ItemSelection : MonoBehaviour {
 
-	public Material selectedMaterial;
-	public Material movingMaterial;
-	public Material invalidMaterial;
 	public GameObject lineRendererGobject;
 	private LineRenderer lineRenderComponent;
 	public GameObject rightControllerRef;
 	public float rotateSpeed = 100.0f;
 	public float translateSpeed = 1.0f;
-	public List<GameObject> selectedObjects = new List<GameObject>();
+	public PlayerState playerState;
 	private bool isSelecting = false;
 
 	void Start(){
 		lineRenderComponent = lineRendererGobject.GetComponent<LineRenderer> ();
+		playerState = GetComponent<PlayerState> ();
 	}
 	
 	// Update is called once per frame
@@ -47,12 +45,11 @@ public class ItemSelection : MonoBehaviour {
 							item = hit.transform.gameObject.AddComponent (typeof(ItemSelectState)) as ItemSelectState;
 							item.enabled = true;
 							item.SetValidMaterial ();
-							selectedObjects.Add (hit.transform.gameObject);
+							playerState.selectedObjects.Add (hit.transform.gameObject);
 						} else { // this object was previously selected
-							if (!item.canBePlaced)
-								item.ResetOriginalState ();
-							var i = selectedObjects.IndexOf(hit.transform.gameObject);
-							selectedObjects.RemoveAt (i);
+							item.ResetOriginalState ();
+							var i = playerState.selectedObjects.IndexOf(hit.transform.gameObject);
+							playerState.selectedObjects.RemoveAt (i);
 							item.ResetMaterials ();
 							Destroy (item);
 						}
@@ -67,11 +64,11 @@ public class ItemSelection : MonoBehaviour {
 			lineRendererGobject.SetActive (false);
 		}
 
-		if (selectedObjects.Count > 0) {
+		if (playerState.selectedObjects.Count > 0) {
 			var leftThumbstick = OVRInput.Get (OVRInput.RawAxis2D.LThumbstick);
 			var rightThumbstick = OVRInput.Get (OVRInput.RawAxis2D.RThumbstick);
 			Vector3 midLoc = Vector3.zero;
-			foreach (var selected in selectedObjects) {
+			foreach (var selected in playerState.selectedObjects) {
 				var selectedState = selected.GetComponent<ItemSelectState> ();
 				if (!selectedState.canBePlaced)
 					selectedState.SetInvalidMaterial ();
@@ -84,10 +81,10 @@ public class ItemSelection : MonoBehaviour {
 				midLoc += selected.transform.position;
 			}
 
-			midLoc /= selectedObjects.Count;
+			midLoc /= playerState.selectedObjects.Count;
 
 
-			foreach(var selected in selectedObjects){
+			foreach(var selected in playerState.selectedObjects){
 				selected.transform.RotateAround (midLoc, Vector3.up, rotateSpeed * leftThumbstick.x * Time.deltaTime);
 
 				Vector3 forward3d = new Vector3(rightControllerRef.transform.forward.x, 0, rightControllerRef.transform.forward.z).normalized;
@@ -96,7 +93,27 @@ public class ItemSelection : MonoBehaviour {
 				selected.transform.Translate (right3d * rightThumbstick.x * Time.deltaTime * translateSpeed, Space.World);
 			}
 
-			//
+			// place all items only if all objects can be placed, else return all objects to original position
+			if (OVRInput.Get (OVRInput.RawButton.A)) {
+				bool groupPlacable = true;
+				foreach (var item in playerState.selectedObjects) {
+					var itemSelectState = item.GetComponent<ItemSelectState> ();
+					groupPlacable = groupPlacable && itemSelectState.canBePlaced;
+				}
+
+				if (!groupPlacable) {
+					foreach (var item in playerState.selectedObjects) {
+						var itemSelectState = item.GetComponent<ItemSelectState> ();
+						itemSelectState.ResetOriginalState ();
+					}
+				}
+				foreach (var item in playerState.selectedObjects) {
+					var itemSelectState = item.GetComponent<ItemSelectState> ();
+					itemSelectState.ResetMaterials ();
+					Destroy (itemSelectState);
+				}
+				playerState.selectedObjects.Clear();
+			}
 		}
 	}
 

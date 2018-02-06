@@ -27,6 +27,7 @@ public class ItemSelectState : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider col){
+		Debug.Log (col.tag);
 		canBePlaced = false;
 		if(!collided.Contains(col.gameObject))
 			collided.Add (col.gameObject);
