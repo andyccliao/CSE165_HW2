@@ -91,10 +91,11 @@ public class ItemSelection : MonoBehaviour {
 			foreach(var selected in selectedObjects){
 				
 				selected.transform.RotateAround (midLoc, Vector3.up, rotateSpeed * leftThumbstick.x * Time.deltaTime);
-				selected.transform.Translate (new Vector3 (
-					rightControllerRef.transform.forward.x * rightThumbstick.x, 
-					rightControllerRef.transform.forward.y * rightThumbstick.y, 
-					0) * Time.deltaTime * translateSpeed);
+
+				Vector3 forward3d = new Vector3(rightControllerRef.transform.forward.x, 0, rightControllerRef.transform.forward.z).normalized;
+				Vector3 right3d = new Vector3 (rightControllerRef.transform.right.x, 0, rightControllerRef.transform.right.z).normalized;
+				selected.transform.Translate (forward3d * rightThumbstick.y * Time.deltaTime * translateSpeed, Space.World);
+				selected.transform.Translate (right3d * rightThumbstick.x * Time.deltaTime * translateSpeed, Space.World);
 			}
 
 			//
