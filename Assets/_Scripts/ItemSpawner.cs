@@ -56,7 +56,7 @@ public class ItemSpawner : MonoBehaviour {
 					var itemPreviewState = itemSpawnPreview.GetComponent<ItemPreviewState> ();
 					if (itemPreviewState != null) {
 						if (itemPreviewState.CanBePlaced) {
-							if (OVRInput.GetDown (OVRInput.Button.SecondaryThumbstick)) {
+							if (OVRInput.GetDown (OVRInput.RawButton.RIndexTrigger)) {
 								itemManager.SpawnObject (itemSpawnPreview, itemPreviewState.transform.position);
 							} 
 						}

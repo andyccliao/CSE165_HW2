@@ -21,13 +21,13 @@ public class ItemSelection : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		var fRightHandInput = OVRInput.Get (OVRInput.Axis1D.SecondaryHandTrigger);
+		var fRightHandInput = OVRInput.Get (OVRInput.RawAxis1D.RHandTrigger);
 		var rightHandTrigger = 0.0f;
 		RaycastHit hit;
 		if (lineRenderComponent != null &&
 		    fRightHandInput > 0.8 &&
 		    Physics.Raycast (rightControllerRef.transform.position, rightControllerRef.transform.forward, out hit)) {
-			rightHandTrigger = OVRInput.Get (OVRInput.Axis1D.SecondaryIndexTrigger);
+			rightHandTrigger = OVRInput.Get (OVRInput.RawAxis1D.RIndexTrigger);
 			//Debug.Log (hit.point);
 
 			var startPoint = rightControllerRef.transform.position;
@@ -46,7 +46,7 @@ public class ItemSelection : MonoBehaviour {
 						if (item == null) { // this object has not been selected
 							item = hit.transform.gameObject.AddComponent (typeof(ItemSelectState)) as ItemSelectState;
 							item.enabled = true;
-							item.SetMaterial (selectedMaterial);
+							item.SetValidMaterial ();
 							selectedObjects.Add (hit.transform.gameObject);
 						} else { // this object was previously selected
 							if (!item.canBePlaced)
@@ -68,15 +68,15 @@ public class ItemSelection : MonoBehaviour {
 		}
 
 		if (selectedObjects.Count > 0) {
-			var leftThumbstick = OVRInput.Get (OVRInput.Axis2D.PrimaryThumbstick);
-			var rightThumbstick = OVRInput.Get (OVRInput.Axis2D.SecondaryThumbstick);
+			var leftThumbstick = OVRInput.Get (OVRInput.RawAxis2D.LThumbstick);
+			var rightThumbstick = OVRInput.Get (OVRInput.RawAxis2D.RThumbstick);
 			Vector3 midLoc = Vector3.zero;
 			foreach (var selected in selectedObjects) {
 				var selectedState = selected.GetComponent<ItemSelectState> ();
 				if (!selectedState.canBePlaced)
-					selectedState.SetMaterial (invalidMaterial);
+					selectedState.SetInvalidMaterial ();
 				else
-					selectedState.SetMaterial (selectedMaterial);
+					selectedState.SetValidMaterial ();
 				if (midLoc == Vector3.zero) {
 					midLoc = selected.transform.position;
 					continue;
@@ -86,10 +86,8 @@ public class ItemSelection : MonoBehaviour {
 
 			midLoc /= selectedObjects.Count;
 
-			//parentSelectRef.transform.position = midLoc;
 
 			foreach(var selected in selectedObjects){
-				
 				selected.transform.RotateAround (midLoc, Vector3.up, rotateSpeed * leftThumbstick.x * Time.deltaTime);
 
 				Vector3 forward3d = new Vector3(rightControllerRef.transform.forward.x, 0, rightControllerRef.transform.forward.z).normalized;

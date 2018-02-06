@@ -36,7 +36,7 @@ public class PlayerState : MonoBehaviour {
 	void Update () {
 
 		// tap Y to toggle between selection mode and teleport mode
-		if (OVRInput.GetDown (OVRInput.Button.Four)) {
+		if (OVRInput.GetDown (OVRInput.RawButton.Y)) {
 			playerState = (EPlayerStates)(((int)(((int)playerState) + 1)) % ((int)EPlayerStates.SIZE));
 		}
 
