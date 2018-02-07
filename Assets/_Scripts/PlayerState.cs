@@ -7,13 +7,16 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Teleport))]
 [RequireComponent(typeof(ItemSelection))]
 [RequireComponent(typeof(ItemSelection2))]
+[RequireComponent(typeof(CopyPaste))]
 public class PlayerState : MonoBehaviour {
 
 	public Teleport teleportRef;
 	private ItemSpawner itemSpawner;
 	private ItemSelection itemSelection;
 	private ItemSelection2 itemSelection2;
+	private CopyPaste copyPaste;
 	public List<GameObject> selectedObjects = new List<GameObject>();
+	public List<GameObject> selectedToCopyObjects = new List<GameObject>();
 	public Text stateTextComponent;
 	public Text instructionTextComponent;
 
@@ -24,8 +27,9 @@ public class PlayerState : MonoBehaviour {
 		Spawn = 1,
 		Select1 = 2,
 		Select2 = 3,
-		MeasuringTool = 4,
-		SIZE = 5 // MAKE SURE THIS IS AT THE END
+		CopyPaste = 4,
+		MeasuringTool = 5,
+		SIZE = 6 // MAKE SURE THIS IS AT THE END
 	};
 
 	void Start(){
@@ -33,6 +37,7 @@ public class PlayerState : MonoBehaviour {
 		itemSpawner = GetComponent<ItemSpawner>();
 		itemSelection = GetComponent<ItemSelection> ();
 		itemSelection2 = GetComponent<ItemSelection2> ();
+		copyPaste = GetComponent<CopyPaste>();
 		itemSpawner.enabled = false;
 	}
 	// Update is called once per frame
@@ -51,6 +56,7 @@ public class PlayerState : MonoBehaviour {
 			itemSpawner.enabled = false;
 			itemSelection.enabled = false;
 			itemSelection2.enabled = false;
+			copyPaste.enabled = false;
 			SetStateText ("Teleport Mode");
 			SetInstructionText ("Press hold Right Palm\nAim\nPull right trigger to teleport");
 			break;
@@ -59,6 +65,7 @@ public class PlayerState : MonoBehaviour {
 			itemSpawner.enabled = true;
 			itemSelection.enabled = false;
 			itemSelection2.enabled = false;
+			copyPaste.enabled = false;
 			SetStateText ("Spawn Mode");
 			break;
 		case EPlayerStates.Select1:
@@ -66,6 +73,7 @@ public class PlayerState : MonoBehaviour {
 			itemSpawner.enabled = false;
 			itemSelection.enabled = true;
 			itemSelection2.enabled = false;
+			copyPaste.enabled = false;
 			SetStateText ("Select1 Mode");
 			break;
 		case EPlayerStates.Select2:
@@ -73,13 +81,23 @@ public class PlayerState : MonoBehaviour {
 			itemSpawner.enabled = false;
 			itemSelection.enabled = false;
 			itemSelection2.enabled = true;
+			copyPaste.enabled = false;
 			SetStateText ("Select2 Mode");
+			break;
+		case EPlayerStates.CopyPaste:
+			teleportRef.enabled = false;
+			itemSpawner.enabled = false;
+			itemSelection.enabled = false;
+			itemSelection2.enabled = false;
+			copyPaste.enabled = true;
+			SetStateText ("CopyPaste Mode");
 			break;
 		case EPlayerStates.MeasuringTool:
 			teleportRef.enabled = false;
 			itemSpawner.enabled = false;
 			itemSelection.enabled = false;
 			itemSelection2.enabled = true;
+			copyPaste.enabled = false;
 			SetStateText ("Measuring Mode");
 			break;
 		default:
@@ -87,6 +105,7 @@ public class PlayerState : MonoBehaviour {
 			itemSpawner.enabled = false;
 			itemSelection.enabled = false;
 			itemSelection2.enabled = false;
+			copyPaste.enabled = false;
 			SetStateText ("Teleport Mode");
 			break;
 		}

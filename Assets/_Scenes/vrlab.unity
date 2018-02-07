@@ -945,7 +945,7 @@ GameObject:
   - component: {fileID: 537065474}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1427,6 +1427,23 @@ GameObject:
   m_PrefabParentObject: {fileID: 1287578418245794, guid: 88226463aabb293479ac87ac0c54047a,
     type: 2}
   m_PrefabInternal: {fileID: 1702884435}
+--- !u!114 &836099839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 836099838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbc3df394c331a74b80f0afbf0a4aeb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRendererGobject: {fileID: 1568150679}
+  rightControllerRef: {fileID: 1648746177}
+  rotateSpeed: 100
+  translateSpeed: 1
+  playerState: {fileID: 836099842}
+  itemManager: {fileID: 660481701}
 --- !u!114 &836099842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1440,6 +1457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teleportRef: {fileID: 1648746181}
   selectedObjects: []
+  selectedToCopyObjects: []
   stateTextComponent: {fileID: 524662136}
   instructionTextComponent: {fileID: 1286673685}
 --- !u!114 &836099843

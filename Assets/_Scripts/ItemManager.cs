@@ -74,7 +74,7 @@ public class ItemManager : MonoBehaviour {
 
 	}
 
-	public void SpawnObject(GameObject gObject, Vector3 position){
+	public GameObject SpawnObject(GameObject gObject, Vector3 position, bool inheritRotation = false){
 		GameObject go;
 		switch (gObject.tag) {
 		case "deskTag":
@@ -93,13 +93,18 @@ public class ItemManager : MonoBehaviour {
 			go = (storageArr.Count == 0) ? null : storageArr.Dequeue () as GameObject;
 			break;
 		default:
-			return;
+			return null;
 		}
 
 		if (go != null) {
 			go.SetActive (true);
 			go.transform.position = position;
+			if(inheritRotation){
+				go.transform.rotation = gObject.transform.rotation;
+			}
 		}
+
+		return go;
 
 	}
 //	GameObject SpawnDesk(Vector3 position){
