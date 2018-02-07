@@ -123,6 +123,12 @@ public class ItemSelection2 : MonoBehaviour {
 	}
 
 	void OnDisable() {
-
+		foreach (var item in playerState.selectedObjects)
+        {
+            var itemSelectState = item.GetComponent<ItemSelectState>();
+			itemSelectState.ResetOriginalState();
+            itemSelectState.ResetMaterials();
+            Destroy(itemSelectState);
+        }
 	}
 }
