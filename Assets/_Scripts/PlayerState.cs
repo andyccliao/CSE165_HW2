@@ -62,7 +62,7 @@ public class PlayerState : MonoBehaviour {
 			copyPaste.enabled = false;
 			measureTool.enabled = false;
 			SetStateText ("Teleport Mode");
-			SetInstructionText ("Press hold Right Palm\nAim\nPull right trigger to teleport");
+			SetInstructionText ("Press hold Right Palm\nAim with Right Touch Controller\nPull right trigger to teleport");
 			break;
 		case EPlayerStates.Spawn:
 			teleportRef.enabled = false;
@@ -72,6 +72,7 @@ public class PlayerState : MonoBehaviour {
 			copyPaste.enabled = false;
 			measureTool.enabled = false;
 			SetStateText ("Spawn Mode");
+			SetInstructionText ("Cycle through objects to spawn with A and B\nAim with Right Touch Controller\nPull right trigger to spawn that object");
 			break;
 		case EPlayerStates.Select1:
 			teleportRef.enabled = false;
@@ -81,6 +82,11 @@ public class PlayerState : MonoBehaviour {
 			copyPaste.enabled = false;
 			measureTool.enabled = false;
 			SetStateText ("Select1 Mode");
+			SetInstructionText ("Press and hold Right Palm\n" +
+				"Aim with Right Touch Controller\n" + 
+				"Pull right trigger to select object(s)\n " + 
+				"Use right thumbstick to translate, left thumbstick to rotate\n" + 
+				"Press A to Snap in place");
 			break;
 		case EPlayerStates.Select2:
 			teleportRef.enabled = false;
@@ -90,6 +96,9 @@ public class PlayerState : MonoBehaviour {
 			copyPaste.enabled = false;
 			measureTool.enabled = false;
 			SetStateText ("Select2 Mode");
+			SetInstructionText ("Touch the object by pressing Right Palm once\n" + 
+				"Translate/Rotate the object by holding trigger and moving the Right Controller\n" + 
+				"Press A to Snap in place");
 			break;
 		case EPlayerStates.CopyPaste:
 			teleportRef.enabled = false;
@@ -99,6 +108,9 @@ public class PlayerState : MonoBehaviour {
 			copyPaste.enabled = true;
 			measureTool.enabled = false;
 			SetStateText ("CopyPaste Mode");
+			SetInstructionText ("Press and hold Right Palm\nAim with Right Touch Controller\n" + 
+				"Pull right trigger to copy object(s)\nUse right thumbstick to translate, left thumbstick to rotate\n" + 
+				"Press A to Snap in place");
 			break;
 		case EPlayerStates.MeasuringTool:
 			teleportRef.enabled = false;
@@ -108,6 +120,8 @@ public class PlayerState : MonoBehaviour {
 			copyPaste.enabled = false;
 			measureTool.enabled = true;
 			SetStateText ("Measuring Mode");
+			SetInstructionText ("Press and hold Right Palm and Left Palm\nAim with Left and Right Touch Controller\n" + 
+				"Pull Right and Left triggers to set points\nPress B to reset points\n");
 			break;
 		default:
 			teleportRef.enabled = true;
@@ -117,6 +131,7 @@ public class PlayerState : MonoBehaviour {
 			copyPaste.enabled = false;
 			measureTool.enabled = false;
 			SetStateText ("Teleport Mode");
+			SetInstructionText ("Press hold Right Palm\nAim with Right Touch Controller\nPull right trigger to teleport");
 			break;
 		}
 			
