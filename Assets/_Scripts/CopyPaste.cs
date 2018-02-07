@@ -44,7 +44,7 @@ public GameObject lineRendererGobject;
 					if (CheckTag (tag)) {
 						var item = hit.transform.gameObject.GetComponent<CopyState> ();
 						if (item == null) { // this object has not been selected
-							var go = itemManager.SpawnObject(hit.transform.gameObject, hit.transform.position);
+							var go = itemManager.SpawnObject(hit.transform.gameObject, hit.transform.position, true);
 							item = go.AddComponent (typeof(CopyState)) as CopyState;
 							item.enabled = true;
 							item.SetValidMaterial ();
