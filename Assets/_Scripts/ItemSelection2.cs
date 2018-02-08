@@ -55,61 +55,80 @@ public class ItemSelection2 : MonoBehaviour {
 			allowSelection = true;
 		}
 
-		if (playerState.selectedObjects.Count > 0) {
+        if (playerState.selectedObjects.Count > 0)
+        {
 
-			if (fRightIndexTrigger > 0.8f) {
-//			var leftThumbstick = OVRInput.Get (OVRInput.RawAxis2D.LThumbstick);
-//			var rightThumbstick = OVRInput.Get (OVRInput.RawAxis2D.RThumbstick);
-				Vector3 midLoc = Vector3.zero;
-				foreach (var selected in playerState.selectedObjects) {
-					var selectedState = selected.GetComponent<ItemSelectState> ();
-					if (!selectedState.canBePlaced)
-						selectedState.SetInvalidMaterial ();
-					else
-						selectedState.SetValidMaterial ();
-					if (midLoc == Vector3.zero) {
-						midLoc = selected.transform.position;
-						continue;
-					}
-					midLoc += selected.transform.position;
-				}
+            if (fRightIndexTrigger > 0.8f)
+            {
+                //			var leftThumbstick = OVRInput.Get (OVRInput.RawAxis2D.LThumbstick);
+                //			var rightThumbstick = OVRInput.Get (OVRInput.RawAxis2D.RThumbstick);
+                Vector3 midLoc = Vector3.zero;
+                foreach (var selected in playerState.selectedObjects)
+                {
+                    var selectedState = selected.GetComponent<ItemSelectState>();
+                    if (!selectedState.canBePlaced)
+                        selectedState.SetInvalidMaterial();
+                    else
+                        selectedState.SetValidMaterial();
+                    if (midLoc == Vector3.zero)
+                    {
+                        midLoc = selected.transform.position;
+                        continue;
+                    }
+                    midLoc += selected.transform.position;
+                }
 
-				midLoc /= playerState.selectedObjects.Count;
+                midLoc /= playerState.selectedObjects.Count;
 
 
-				Quaternion deltaRot = Quaternion.Inverse (prevRot) * rightControllerRef.transform.rotation;
-				Vector3 translation = rightControllerRef.transform.position - prevPos;
-				Vector3 flatTranslation = new Vector3 (translation.x, 0, translation.z);
-				foreach (var selected in playerState.selectedObjects) {
-					float finalRot = (deltaRot.eulerAngles.y > 180) ? deltaRot.eulerAngles.y - 360 : deltaRot.eulerAngles.y;
-					selected.transform.RotateAround(midLoc, Vector3.up, finalRot * rotateSpeed);
+                Quaternion deltaRot = Quaternion.Inverse(prevRot) * rightControllerRef.transform.rotation;
+                Vector3 translation = rightControllerRef.transform.position - prevPos;
+                Vector3 flatTranslation = new Vector3(translation.x, 0, translation.z);
+                foreach (var selected in playerState.selectedObjects)
+                {
+                    float finalRot = (deltaRot.eulerAngles.y > 180) ? deltaRot.eulerAngles.y - 360 : deltaRot.eulerAngles.y;
+                    selected.transform.RotateAround(midLoc, Vector3.up, finalRot * rotateSpeed);
 
-					selected.transform.Translate (flatTranslation * translateSpeed, Space.World);
-				}
-			}
+                    selected.transform.Translate(flatTranslation * translateSpeed, Space.World);
+                }
+            }
 
-			// place all items only if all objects can be placed, else return all objects to original position
-			if (OVRInput.Get (OVRInput.RawButton.A)) {
-				bool groupPlacable = true;
-				foreach (var item in playerState.selectedObjects) {
-					var itemSelectState = item.GetComponent<ItemSelectState> ();
-					groupPlacable = groupPlacable && itemSelectState.canBePlaced;
-				}
+            // place all items only if all objects can be placed, else return all objects to original position
+            if (OVRInput.Get(OVRInput.RawButton.A))
+            {
+                bool groupPlacable = true;
+                foreach (var item in playerState.selectedObjects)
+                {
+                    var itemSelectState = item.GetComponent<ItemSelectState>();
+                    groupPlacable = groupPlacable && itemSelectState.canBePlaced;
+                }
 
-				if (!groupPlacable) {
-					foreach (var item in playerState.selectedObjects) {
-						var itemSelectState = item.GetComponent<ItemSelectState> ();
-						itemSelectState.ResetOriginalState ();
-					}
-				}
-				foreach (var item in playerState.selectedObjects) {
-					var itemSelectState = item.GetComponent<ItemSelectState> ();
-					itemSelectState.ResetMaterials ();
-					Destroy (itemSelectState);
-				}
-				playerState.selectedObjects.Clear();
-			}
-		}
+                if (!groupPlacable)
+                {
+                    foreach (var item in playerState.selectedObjects)
+                    {
+                        var itemSelectState = item.GetComponent<ItemSelectState>();
+                        itemSelectState.ResetOriginalState();
+                    }
+                }
+                foreach (var item in playerState.selectedObjects)
+                {
+                    var itemSelectState = item.GetComponent<ItemSelectState>();
+                    itemSelectState.ResetMaterials();
+                    Destroy(itemSelectState);
+                }
+                playerState.selectedObjects.Clear();
+            }
+            else if (OVRInput.Get(OVRInput.RawButton.RThumbstick))
+            {
+                foreach (var item in playerState.selectedObjects)
+                {
+                    Destroy(item);
+                }
+                playerState.selectedObjects.Clear();
+                rightControllerTouch.isTouching = false;
+            }
+        }
 		prevPos = rightControllerRef.transform.position;
 		prevRot.eulerAngles = new Vector3(0, rightControllerRef.transform.rotation.eulerAngles.y, 0);
 	}
@@ -123,12 +142,6 @@ public class ItemSelection2 : MonoBehaviour {
 	}
 
 	void OnDisable() {
-		foreach (var item in playerState.selectedObjects)
-        {
-            var itemSelectState = item.GetComponent<ItemSelectState>();
-			itemSelectState.ResetOriginalState();
-            itemSelectState.ResetMaterials();
-            Destroy(itemSelectState);
-        }
-	}
+        /* Move deselection of objects to PlayerState, to preserve selected objects across Selection1 and Selection2. */
+    }
 }

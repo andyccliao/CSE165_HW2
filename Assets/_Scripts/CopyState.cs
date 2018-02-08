@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CopyState : MonoBehaviour {
 
@@ -11,7 +12,10 @@ public class CopyState : MonoBehaviour {
 	public Material validMaterial;
 	public Material invalidMaterial;
 	public List<GameObject> collided;
-	public Vector3 originalPos;
+    /* TEST */
+    public Dictionary<GameObject, int> collidedDict;
+    /* TEST */
+    public Vector3 originalPos;
 	public Quaternion originalRot;
 	public bool canBePlaced = true;
 	// Use this for initialization
@@ -24,22 +28,23 @@ public class CopyState : MonoBehaviour {
 		originalRot = transform.rotation;
 		collided = new List<GameObject> ();
 		SaveMaterials ();
-	}
+    }
 
-	void OnTriggerEnter(Collider col){
+    void OnTriggerEnter(Collider col){
 		Debug.Log (col.tag);
 		canBePlaced = false;
-		if(!collided.Contains(col.gameObject) && !col.CompareTag("Floor"))
+		if(/*!collided.Contains(col.gameObject) &&*/ !col.CompareTag("Floor"))
 			collided.Add (col.gameObject);
-	}
+    }
 
 	void OnTriggerExit(Collider col){
 		collided.Remove (col.gameObject);
 
-		if (collided.Count == 0) {
-			canBePlaced = true;
-		}
-	}
+        if (collided.Count == 0)
+        {
+            canBePlaced = true;
+        }
+    }
 
 	private void SaveMaterials(){
 		Debug.Log ("SAVE MATERIALS");

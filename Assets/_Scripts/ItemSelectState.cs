@@ -29,7 +29,7 @@ public class ItemSelectState : MonoBehaviour {
 	void OnTriggerEnter(Collider col){
 		Debug.Log (col.tag);
 		canBePlaced = false;
-		if(!collided.Contains(col.gameObject))
+		if(/*!collided.Contains(col.gameObject)*/ !col.CompareTag("Floor"))
 			collided.Add (col.gameObject);
 	}
 
@@ -110,4 +110,9 @@ public class ItemSelectState : MonoBehaviour {
 		transform.position = originalPos;
 		transform.rotation = originalRot;
 	}
+
+    public void OnDestroy()
+    {
+        ResetMaterials();
+    }
 }

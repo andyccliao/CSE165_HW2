@@ -63,6 +63,7 @@ public class PlayerState : MonoBehaviour {
 			measureTool.enabled = false;
 			SetStateText ("Teleport Mode");
 			SetInstructionText ("Press hold Right Palm\nAim with Right Touch Controller\nPull right trigger to teleport");
+            DeselectObjects();
 			break;
 		case EPlayerStates.Spawn:
 			teleportRef.enabled = false;
@@ -73,6 +74,7 @@ public class PlayerState : MonoBehaviour {
 			measureTool.enabled = false;
 			SetStateText ("Spawn Mode");
 			SetInstructionText ("Cycle through objects to spawn with A and B\nAim with Right Touch Controller\nPull right trigger to spawn that object");
+            DeselectObjects();
 			break;
 		case EPlayerStates.Select1:
 			teleportRef.enabled = false;
@@ -111,6 +113,7 @@ public class PlayerState : MonoBehaviour {
 			SetInstructionText ("Press and hold Right Palm\nAim with Right Touch Controller\n" + 
 				"Pull right trigger to copy object(s)\nUse right thumbstick to translate, left thumbstick to rotate\n" + 
 				"Press A to Snap in place");
+            DeselectObjects();
 			break;
 		case EPlayerStates.MeasuringTool:
 			teleportRef.enabled = false;
@@ -122,6 +125,7 @@ public class PlayerState : MonoBehaviour {
 			SetStateText ("Measuring Mode");
 			SetInstructionText ("Press and hold Right Palm and Left Palm\nAim with Left and Right Touch Controller\n" + 
 				"Pull Right and Left triggers to set points\nPress B to reset points\n");
+            DeselectObjects();
 			break;
 		default:
 			teleportRef.enabled = true;
@@ -132,7 +136,8 @@ public class PlayerState : MonoBehaviour {
 			measureTool.enabled = false;
 			SetStateText ("Teleport Mode");
 			SetInstructionText ("Press hold Right Palm\nAim with Right Touch Controller\nPull right trigger to teleport");
-			break;
+            DeselectObjects();
+            break;
 		}
 			
 	}
@@ -149,4 +154,21 @@ public class PlayerState : MonoBehaviour {
 			instructionTextComponent.text = text;
 		}
 	}
+
+    void DeselectObjects()
+    {
+        foreach (var item in selectedObjects)
+        {
+            var itemSelectState = item.GetComponent<ItemSelectState>();
+            /* Make itemSelectState reset materials and state when OnDestroy */
+            //itemSelectState.ResetOriginalState();
+            //itemSelectState.ResetMaterials();
+            if (itemSelectState != null)
+            {
+                itemSelectState.ResetOriginalState();
+                Destroy(itemSelectState);
+            }
+        }
+        selectedObjects.Clear();
+    }
 }

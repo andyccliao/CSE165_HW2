@@ -133,8 +133,16 @@ public class ItemSelection : MonoBehaviour
                 foreach (var item in playerState.selectedObjects)
                 {
                     var itemSelectState = item.GetComponent<ItemSelectState>();
-                    itemSelectState.ResetMaterials();
+                    //itemSelectState.ResetMaterials(); //Unnecessary
                     Destroy(itemSelectState);
+                }
+                playerState.selectedObjects.Clear();
+            }
+            else if (OVRInput.Get(OVRInput.RawButton.RThumbstick))
+            {
+                foreach (var item in playerState.selectedObjects)
+                {
+                    Destroy(item);
                 }
                 playerState.selectedObjects.Clear();
             }
@@ -152,13 +160,7 @@ public class ItemSelection : MonoBehaviour
 
     void OnDisable()
     {
-        foreach (var item in playerState.selectedObjects)
-        {
-            var itemSelectState = item.GetComponent<ItemSelectState>();
-			itemSelectState.ResetOriginalState();
-            itemSelectState.ResetMaterials();
-            Destroy(itemSelectState);
-        }
+        /* Move deselection of objects to PlayerState, to preserve selected objects across Selection1 and Selection2. */
         if (lineRendererGobject != null)
             lineRendererGobject.SetActive(false);
     }

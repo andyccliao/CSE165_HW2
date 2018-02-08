@@ -856,6 +856,21 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 65895194055420042, guid: 29d3d392f95a6bd40bc2f83f423e6f8d,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65087766293951218, guid: 29d3d392f95a6bd40bc2f83f423e6f8d,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65206885202481980, guid: 29d3d392f95a6bd40bc2f83f423e6f8d,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 29d3d392f95a6bd40bc2f83f423e6f8d, type: 2}
   m_IsPrefabParent: 0
@@ -1558,7 +1573,7 @@ MonoBehaviour:
   lineRendererGobject: {fileID: 1568150679}
   rightControllerRef: {fileID: 1648746177}
   rotateSpeed: 100
-  translateSpeed: 1
+  translateSpeed: 3
   playerState: {fileID: 836099842}
   itemManager: {fileID: 660481701}
 --- !u!114 &836099840
@@ -1631,7 +1646,7 @@ MonoBehaviour:
   lineRendererGobject: {fileID: 1568150679}
   rightControllerRef: {fileID: 1648746177}
   rotateSpeed: 100
-  translateSpeed: 5
+  translateSpeed: 3
   playerState: {fileID: 0}
 --- !u!114 &836099845
 MonoBehaviour:
@@ -3866,6 +3881,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4125637463158836, guid: 29d3d392f95a6bd40bc2f83f423e6f8d, type: 2}
       propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65206885202481980, guid: 29d3d392f95a6bd40bc2f83f423e6f8d,
+        type: 2}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

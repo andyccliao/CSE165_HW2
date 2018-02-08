@@ -30,7 +30,9 @@ public class MeasureTool : MonoBehaviour
 
 	void OnDisable(){
 		measureText.text = "";
-	}
+        lLineRendererGobject.SetActive(false);
+        rLineRendererGobject.SetActive(false);
+    }
 
     // Update is called once per frame
     void Update()
